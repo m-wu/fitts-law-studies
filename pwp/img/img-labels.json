@@ -1,0 +1,19 @@
+{
+  "practice": {
+    "group1": ["fruit", "bedding item"]
+  },
+  "set1": {
+    "group1": ["vegetable", "body part", "traffic sign", "musical instrument"],
+    "group2": ["vehicle", "furniture", "stationary item", "electronic device"],
+    "group3": ["insect", "tool", "clothing accessory", "cookware"],
+    "group4": ["jewellery item", "food item", "toy", "clothing"],
+    "group5": ["flower", "kitchen utensil", "sports equipment", "animal"]
+  },
+  "set2": {
+    "group1": ["party decoration", "instrument", "vehicle", "clothing accessory"],
+    "group2": ["flower", "furniture", "electronic device", "sports equipment"],
+    "group3": ["kitchen utensil", "footwear", "vegetable", "insect"],
+    "group4": ["jewellery item", "traffic sign", "toy", "body part"],
+    "group5": ["tool", "stationary item", "cookware", "animal"]
+  }
+}

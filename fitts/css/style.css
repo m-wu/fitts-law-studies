@@ -1,0 +1,31 @@
+html, body, #container, #fitts, .bar{
+  height: 100%;
+  background-color: #eee;
+}
+
+#fitts {
+  cursor: crosshair;  
+}
+
+.bar {
+  background-color: gray;
+  width: 30px;
+  position:absolute;
+  opacity: 0.65;
+}
+/*
+.bar:hover{
+  background-color: green;
+}*/
+
+.bar.target{
+  background-color: green;
+}
+
+.message{
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}

@@ -1,0 +1,38 @@
+html, body, #container, #fitts, .bar{
+    height: 100%;
+    background-color: #eee;
+    overflow: hidden;
+}
+
+div#images {
+    text-align: center;
+}
+
+img.target {
+    border: 2px dotted #8a8a8a;
+}
+
+img.clickable {
+    cursor: pointer;
+}
+
+html.no-touch img.target.clickable:hover {
+    border: 2px solid gray;
+}
+
+div.horizontal-gap {
+    display: inline-block;
+}
+
+div#clue {
+    height: 50px;
+    font-size: 26pt;
+}
+
+.message{
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
