@@ -1,5 +1,5 @@
 // participantData stores participant ID (pid) and test results (results).
-var participantData = {pid: null, results: {}};
+var participantData = {pid: null, device: null, results: {}};
 
 // parameters for the main experiment
 var mainConditions = {
@@ -82,12 +82,18 @@ var Experiment = React.createClass({
 
 var Introduction = React.createClass({
     getInitialState: function () {
-        return {pid: ''}
+        return {pid: '', device: participantData.device}
     },
-    handleChange: function (e) {
-        // state of pid is used for enabling/disabling the continue button:
-        // pid must be entered before continuing.
+    onPidChange: function (e) {
         this.setState({pid: e.target.value})
+    },
+    onDeviceChange: function (e) {
+        this.setState({device: e.target.value});
+    },
+    getActiveBtnClass: function(value) {
+        // set button for the correct selected device to active
+        var btnClass = "btn btn-default";
+        return (value == this.state.device) ? btnClass + " active" : btnClass;
     },
     render: function () {
         return (
@@ -98,14 +104,31 @@ var Introduction = React.createClass({
                 <form>
                     <div className="form-group">
                         <label>Participant ID</label>
-                        <input className="form-control" type="text" ref="pid" onChange={this.handleChange}
+                        <input className="form-control" type="text" ref="pid" onChange={this.onPidChange}
                                defaultValue={this.props.participant.pid} placeholder="Participant ID" autoFocus/>
+                    </div>
+                    <div className="form-group">
+                        <label>Device</label>
+                        <div className="btn-group btn-group-justified" role="group">
+                            <div className="btn-group" role="group">
+                                <button value="mouse" className={this.getActiveBtnClass("mouse")}
+                                        onClick={this.onDeviceChange} type="button">Mouse</button>
+                            </div>
+                            <div className="btn-group" role="group">
+                                <button value="trackpad" className={this.getActiveBtnClass("trackpad")}
+                                        onClick={this.onDeviceChange} type="button">Trackpad</button>
+                            </div>
+                            <div className="btn-group" role="group">
+                                <button value="touchscreen" className={this.getActiveBtnClass("touchscreen")}
+                                        onClick={this.onDeviceChange} type="button">Touchscreen</button>
+                            </div>
+                        </div>
                     </div>
                     <p><label>Widths</label>: {this.props.conditions.targetWidths.join('px, ')+'px'}</p>
                     <p><label>Amplitudes</label>: {this.props.conditions.targetAmplitudes.join('px, ')+'px'}</p>
                     <p><label>Replication</label>: {this.props.conditions.replication}</p>
                     <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.nextStep}
-                            disabled={!this.state.pid}>Continue
+                            disabled={!this.state.pid || !this.state.device}>Continue
                     </button>
                 </form>
             </div>
@@ -114,9 +137,11 @@ var Introduction = React.createClass({
     nextStep: function (e) {
         // stores pid and go to the next step
         e.preventDefault();
-        var data = {pid: this.refs.pid.getDOMNode().value};
-        this.props.saveParticipantData(data);
-        this.props.nextStep();
+        if (this.state.pid && this.state.device){
+            var data = {pid: this.state.pid, device: this.state.device};
+            this.props.saveParticipantData(data);
+            this.props.nextStep();
+        }
     }
 });
 
@@ -175,9 +200,10 @@ var Trials = React.createClass({
             var amplitude = conditionParameter.amplitude;
             var width = conditionParameter.width;
             var pid = this.props.participant.pid;
+            var device = this.props.participant.device;
 
             var data = {}; // stores result of the trial
-            data[trialId] = {pid: pid, amplitude: amplitude, width: width, time: time, correct: correct};
+            data[trialId] = {pid: pid, device: device, amplitude: amplitude, width: width, time: time, correct: correct};
             this.props.saveResults(data);
         }
 
@@ -239,7 +265,7 @@ var Results = React.createClass({
     componentWillMount: function () {
         // convert experiment results to CSV string
         var results = this.props.participant.results;
-        this.resultStr = 'pid,amplitude,width,time,correct\n'; // CSV header
+        this.resultStr = 'pid,device,amplitude,width,time,correct\n'; // CSV header
         for (var trialId in results) {
             if (results.hasOwnProperty(trialId)) {
                 var data = results[trialId];
